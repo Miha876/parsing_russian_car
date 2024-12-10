@@ -1,28 +1,43 @@
-def boos(m, number):
-    if int(number) % 6 == 0:
-        return 0
+import requests
+from bs4 import BeautifulSoup
 
-    other = [i for i, ben in enumerate(number) if int(ben) % 2 == 0]
-    if not other:
-        return -1
+# URL страницы
+url = "https://greenway.icnet.ru/cars-sales-actual-russia.html"
 
-    summ = sum(int(d) for d in number)
-    if summ % 3 != 0:
-        return -1
+# Запрос к странице с заголовком User-Agent
+headers = {
+    'User -Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+}
 
-    minmov = float('inf')
-    for i in other:
-        if i == m - 1:
-            continue
-        mov = abs(i - (m - 1))
-        if i == 0 and number[1] == '0':
-            continue
-        minmov = min(minmov, mov)
+try:
+    # Запрос к странице
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()  # Проверяем статус ответа
 
-    return minmov if minmov != float('inf') else -1
+    # Парсим HTML
+    soup = BeautifulSoup(response.text, 'html.parser')
 
+    # Список для хранения данных
+    popular_cars = []
 
-a = int(input('Введите первое число: '))
-b = input('Введите второе число: ')
+    # Ищем данные о марках и моделях
+    car_data_rows = soup.find_all('tr')  # Пример: строки таблицы
+    for row in car_data_rows:
+        # Ищем конкретные ячейки таблицы
+        columns = row.find_all('td')  # Пример: ячейки строки
+        if len(columns) >= 2:  # Убедимся, что есть как минимум 2 колонки (марка и модель)
+            model = columns[1].get_text(strip=True)  # Получаем только модель
+            if model and model not in ["Марка", "Модель"]:  # Проверяем, что модель не пустая и не является заголовком
+                popular_cars.append(model)  # Добавляем только модель в список
 
-print(boos(a, b))
+    # Выводим результат
+    if popular_cars:
+        print("Самые популярные автомобили:")
+        for model in popular_cars:
+            print(f"Модель: {model}")
+    else:
+        print("Нет доступных моделей для отображения.")
+except requests.RequestException as e:
+    print(f"Ошибка при запросе данных: {e}")
+except Exception as e:
+    print(f"Произошла ошибка: {e}")
