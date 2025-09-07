@@ -1,5 +1,3 @@
-README.md
-markdown
 # Greenway Car Sales Parser
 
 [![Python](https://img.shields.io/badge/Python-3.6%2B-blue?logo=python)](https://www.python.org/)
