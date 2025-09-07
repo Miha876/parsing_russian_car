@@ -39,22 +39,25 @@ Run the script directly from the command line:
 
 ```bash
 python car_parser.py
+```
 Upon successful execution, the script will output a list of popular car models to the console:
 
-text
+```text
 Самые популярные автомобили: (The most popular cars:)
 Модель: Hyundai Creta
 Модель: Lada Vesta
 Модель: Kia Rio
 ...
+```
 📁 Project Structure
-text
+```text
 greenway-car-parser/
 ├── car_parser.py      # Main parser script
 ├── requirements.txt   # Dependencies file
 ├── README.md          # Documentation in Russian
 ├── README_EN.md       # This file (English)
 └── LICENSE            # License file
+```
 ⚙️ How It Works
 The script sends an HTTP GET request to the target URL https://greenway.icnet.ru/cars-sales-actual-russia.html, using predefined headers (User-Agent) to mimic a real web browser.
 
@@ -91,6 +94,3 @@ Ensure your actions comply with the website's Terms of Service.
 Implement delays between requests to avoid overloading the server.
 
 Respect data ownership and copyright.
-
-📜 License
-This project is licensed under the MIT License. See the LICENSE file for details.
